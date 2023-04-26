@@ -1,22 +1,22 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache, NormalizedCacheObject, from } from "@apollo/client";
 import { ThemeProvider } from "@shopify/restyle";
 import { Stack } from "expo-router";
-import { Box, Text } from "../src/components";
 import theme from "../src/components/theme";
 import { apolloDevToolsInit } from "react-native-apollo-devtools-client";
+import { useApollo } from "./useApollo";
 
-const client = new ApolloClient({
-  uri: "https://main--spacex-l4uc6p.apollographos.net/graphql",
-  cache: new InMemoryCache(),
-});
+const client = useApollo({
+  token: "",
+  graphqlEndpoint: "https://main--spacex-l4uc6p.apollographos.net/graphql"
+})
 
 if (__DEV__) {
-  apolloDevToolsInit(client);
+  client && apolloDevToolsInit(client);
 }
 
 export default function Layout() {
   return (
-    <ApolloProvider client={client}>
+    client && <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
         <Stack
           initialRouteName="index"
