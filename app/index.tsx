@@ -1,10 +1,15 @@
+import { useCallback } from "react";
 import { useQuery } from "@apollo/client";
 import { Stack } from "expo-router";
 import { Text, Card, Box, Link } from "../src/components";
 import { NextLaunchDocument } from "../src/queries";
 
 export default function Home() {
-  const result = useQuery(NextLaunchDocument);
+  console.log("home renders");
+  const onCompleted = useCallback(() => {
+    console.log("network request completed!")
+  }, []);
+  const result = useQuery(NextLaunchDocument, { onCompleted });
   return (
     <>
       <Stack.Screen options={{ title: "Home Page" }} />
@@ -18,8 +23,12 @@ export default function Home() {
             <>
               <Text>Mission: {result.data?.launchNext?.mission_name}</Text>
               <Text>Date: {result.data?.launchNext?.launch_date_unix}</Text>
-              <Text>Site: {result.data?.launchNext?.launch_site?.site_name}</Text>
-              <Link href={`/launch/${result.data?.launchNext?.id}`}>Details</Link>
+              <Text>
+                Site: {result.data?.launchNext?.launch_site?.site_name}
+              </Text>
+              <Link href={`/launch/${result.data?.launchNext?.id}`}>
+                Details
+              </Link>
             </>
           )}
         </Card>
