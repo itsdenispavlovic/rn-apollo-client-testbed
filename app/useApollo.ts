@@ -4,7 +4,6 @@ import { setContext } from "@apollo/client/link/context";
 import { ApolloClient, InMemoryCache, from } from "@apollo/client";
 import { CachePersistor, AsyncStorageWrapper } from "apollo3-cache-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { persistenceMapper } from "./utils/persistenceMapper";
 
 interface Props {
   token: string | null;
@@ -53,7 +52,6 @@ export function createApolloClient({ token, graphqlEndpoint }: Props) {
     storage: new AsyncStorageWrapper(AsyncStorage),
     debug: process.env["NODE_ENV"] === "development",
     trigger: "write",
-    persistenceMapper,
     maxSize: false
   });
 
